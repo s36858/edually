@@ -140,3 +140,15 @@ EDUALLYDESIGN = {
     "table": {"table": "table", "table_btn": "btn"},
     "form": {"form": None, "form_btn_submit": None},
 }
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_USE_SSL = False
+EMAIL_HOST = 'smtp.web.de'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'schaefer.sus@web.de'
+EMAIL_HOST_PASSWORD = 'Leckmich10+'
+
+
+FILE_PATH_FIELD_DIRECTORY = os.path.join(
+    'C:/Users/Susi/Documents/Beuth/SoSe21/EBE/content/mathe')

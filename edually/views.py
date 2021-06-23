@@ -3,7 +3,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django_tables2 import RequestConfig
 from .models import Course
 from .forms import *
-from .tables import CourseTable, SemesterTable
+from .tables import *
 
 
 class CrispyFormMixin(object):
@@ -32,14 +32,16 @@ def courseList(request):
     data = Course.objects.all()
     table = CourseTable(data)
     RequestConfig(request).configure(table)
-    return render(request, "base_table.html", {"table": table})
+    return render(request, "edually/course/course_table.html", {"table": table})
 
 
 class CourseCreateView(CreateView, CrispyFormMixin):
     model = Course
     form_class = CourseForm
     template_name = "base_form.html"
-    success_url = "/edually/confirmation"
+
+    def get_success_url(self):
+        return reverse("course_list")
 
 
 class CourseEditView(UpdateView, CrispyFormMixin):
@@ -64,14 +66,16 @@ def semesterList(request):
     data = Semester.objects.all()
     table = SemesterTable(data)
     RequestConfig(request).configure(table)
-    return render(request, "base_table.html", {"table": table})
+    return render(request, "edually/semester/semester_table.html", {"table": table})
 
 
 class SemesterCreateView(CreateView, CrispyFormMixin):
     model = Semester
     form_class = SemesterForm
     template_name = "base_form.html"
-    success_url = "/edually/confirmation"
+
+    def get_success_url(self):
+        return reverse("semester_list")
 
 
 class SemesterEditView(UpdateView, CrispyFormMixin):
@@ -88,3 +92,72 @@ class SemesterDeleteView(DeleteView, CrispyFormMixin):
 
     def get_success_url(self):
         return reverse("semester_list")
+
+# course_content
+
+
+def courseContentList(request):
+    data = CourseContent.objects.all()
+    table = CourseContentTable(data)
+    RequestConfig(request).configure(table)
+    return render(request, "edually/coursecontent/coursecontent_table.html", {"table": table})
+
+
+class CourseContentCreateView(CreateView, CrispyFormMixin):
+    model = CourseContent
+    form_class = CourseContentForm
+    template_name = "base_form.html"
+
+    def get_success_url(self):
+        return reverse("coursecontent_list")
+
+
+class CourseContentEditView(UpdateView, CrispyFormMixin):
+    model = CourseContent
+    form_class = CourseContentForm
+    template_name = "base_form.html"
+
+    def get_success_url(self):
+        return reverse("coursecontent_list")
+
+
+class CourseContentDeleteView(DeleteView, CrispyFormMixin):
+    model = CourseContent
+
+    def get_success_url(self):
+        return reverse("coursecontent_list")
+
+
+# student
+
+
+def studentList(request):
+    data = Student.objects.all()
+    table = StudentTable(data)
+    RequestConfig(request).configure(table)
+    return render(request, "edually/student/student_table.html", {"table": table})
+
+
+class StudentCreateView(CreateView, CrispyFormMixin):
+    model = Student
+    form_class = StudentForm
+    template_name = "base_form.html"
+
+    def get_success_url(self):
+        return reverse("student_list")
+
+
+class StudentEditView(UpdateView, CrispyFormMixin):
+    model = Student
+    form_class = StudentForm
+    template_name = "base_form.html"
+
+    def get_success_url(self):
+        return reverse("student_list")
+
+
+class StudentDeleteView(DeleteView, CrispyFormMixin):
+    model = Student
+
+    def get_success_url(self):
+        return reverse("student_list")

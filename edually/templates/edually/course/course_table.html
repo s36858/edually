@@ -1,0 +1,8 @@
+{% extends 'base.html' %} 
+{% load django_tables2 %}
+{% load bootstrap4 %}
+{% block content %}
+<a class="btn btn-primary" href="{% url 'course_create' %}">add course</a>
+<p></p>
+{% render_table table %}
+{% endblock %}

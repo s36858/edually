@@ -33,3 +33,27 @@ class SemesterForm(forms.ModelForm):
     class Meta:
         model = Semester
         fields = ("name", "start_date", "end_date", )
+
+
+class CourseContentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "OK"))
+
+    class Meta:
+        model = CourseContent
+        fields = ("course", "name", "path", )
+
+
+class StudentForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "OK"))
+
+    class Meta:
+        model = Student
+        fields = ("student_id", "firstname", "lastname", "email")

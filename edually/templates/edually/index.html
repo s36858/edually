@@ -26,37 +26,16 @@
       type="button"
       data-toggle="dropdown"
     >
-      Courses
+      MANAGER
     </button>
     <div class="dropdown-content">
-      <a class="dropdown-item btn-lg" href="{% url 'course_create' %}"
-        >Add Course</a
-      >
-      <a class="dropdown-item btn-lg" href="{% url 'course_list' %}"
-        >Manage Courses</a
-      >
+      <a class="dropdown-item btn-lg" href="{% url 'coursecontent_list' %}">content</a>
+      <a class="dropdown-item btn-lg" href="{% url 'course_list' %}">courses</a>
+      <a class="dropdown-item btn-lg" href="{% url 'semester_list' %}">semester</a>
+      <a class="dropdown-item btn-lg" href="{% url 'student_list' %}">students</a>
     </div>
   </div>
 </div>
 <p></p>
-<div style="text-align: center">
-  <div style="margin-bottom: 15px"></div>
-  <div class="dropdown">
-    <button
-      class="btn btn-primary btn-lg btn-block dropdown-toggle"
-      type="button"
-      data-toggle="dropdown"
-    >
-      Semesters
-    </button>
-    <div class="dropdown-content">
-      <a class="dropdown-item btn-lg" href="{% url 'semester_create' %}"
-        >Add Semester</a
-      >
-      <a class="dropdown-item btn-lg" href="{% url 'semester_list' %}"
-        >Manage Semesters</a
-      >
-    </div>
-  </div>
-</div>
+
 {% endblock %}
