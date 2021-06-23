@@ -14,6 +14,7 @@ import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#BASE_DIR = os.getcwd()
 
 
 # Quick-start development settings - unsuitable for production
@@ -38,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django_extensions',
+    "crispy_forms",
+    "django_tables2",
+    "django_fsm",
+    "bootstrap4",
     'edually'
 ]
 
@@ -56,7 +61,7 @@ ROOT_URLCONF = 'ebe.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        "DIRS": [(os.path.join(BASE_DIR, "templates")), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -68,6 +73,9 @@ TEMPLATES = [
         },
     },
 ]
+
+CRISPY_TEMPLATE_PACK = "bootstrap4"
+DJANGO_TABLES2_TEMPLATE = "django_tables2/bootstrap4.html"
 
 WSGI_APPLICATION = 'ebe.wsgi.application'
 
@@ -120,3 +128,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "edually\static"),
+]
+
+
+EDUALLYDESIGN = {
+    "table": {"table": "table", "table_btn": "btn"},
+    "form": {"form": None, "form_btn_submit": None},
+}

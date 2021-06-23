@@ -1,0 +1,10 @@
+{% extends 'base.html' %} {% block content %}
+<form method="post">
+  {% csrf_token %}
+  <p>
+    Are you sure you want to delete course "{{ object.name }}
+    ({{object.category}})"?
+  </p>
+  <input class="btn btn-primary" type="submit" value="Confirm" />
+</form>
+{% endblock %}

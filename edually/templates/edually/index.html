@@ -1,0 +1,62 @@
+<style>
+  /* Dropdown Content (Hidden by Default) */
+  .dropdown-content {
+    display: none;
+    text-align: center;
+    background-color: #f9f9f9;
+  }
+
+  /* Change color of dropdown links on hover */
+  .dropdown-content a:hover {
+    background-color: #f1f1f1;
+  }
+
+  /* Show the dropdown menu on hover */
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+</style>
+
+{% extends 'base.html' %} {% block content %}
+<div style="text-align: center">
+  <div style="margin-bottom: 15px"></div>
+  <div class="dropdown">
+    <button
+      class="btn btn-primary btn-lg btn-block dropdown-toggle"
+      type="button"
+      data-toggle="dropdown"
+    >
+      Courses
+    </button>
+    <div class="dropdown-content">
+      <a class="dropdown-item btn-lg" href="{% url 'course_create' %}"
+        >Add Course</a
+      >
+      <a class="dropdown-item btn-lg" href="{% url 'course_list' %}"
+        >Manage Courses</a
+      >
+    </div>
+  </div>
+</div>
+<p></p>
+<div style="text-align: center">
+  <div style="margin-bottom: 15px"></div>
+  <div class="dropdown">
+    <button
+      class="btn btn-primary btn-lg btn-block dropdown-toggle"
+      type="button"
+      data-toggle="dropdown"
+    >
+      Semesters
+    </button>
+    <div class="dropdown-content">
+      <a class="dropdown-item btn-lg" href="{% url 'semester_create' %}"
+        >Add Semester</a
+      >
+      <a class="dropdown-item btn-lg" href="{% url 'semester_list' %}"
+        >Manage Semesters</a
+      >
+    </div>
+  </div>
+</div>
+{% endblock %}
