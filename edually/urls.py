@@ -17,7 +17,7 @@ urlpatterns = [
     # content
     path('content/delete/<pk>', views.CourseContentDeleteView.as_view(),
          name="coursecontent_delete"),
-    path('content/edit/<pk>', views.CourseContentWizard.as_view(),
+    path('content/edit/<pk>', views.CourseContentEditView.as_view(),
          name="coursecontent_edit"),
     path('content/create', views.CourseContentWizard.as_view(),
          name="coursecontent_create"),
@@ -30,8 +30,7 @@ urlpatterns = [
     # course
     path('course/delete/<pk>', views.CourseDeleteView.as_view(), name="course_delete"),
     path('course/edit/<pk>', views.CourseEditView.as_view(), name="course_edit"),
-    path('course/create', views.CourseCreateView.as_view(),
-         name="course_create"),
+    path('course/create', views.CourseCreateView.as_view(), name="course_create"),
     # tables
     path('student/list', views.studentList, name="student_list"),
     path('content/list', views.courseContentList, name="coursecontent_list"),

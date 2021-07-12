@@ -41,7 +41,9 @@ class CourseContentTable(tables.Table):
     class Meta:
         model = CourseContent
         attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
-        fields = ("id", "course", "name",)
+        fields = ("id", "course", "name", "get_filename")
+
+    get_filename = tables.columns.Column(verbose_name="Filename")
 
     edit = TemplateColumn(
         template_name="edually/coursecontent/coursecontent_edit_column.html",

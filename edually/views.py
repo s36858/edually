@@ -146,13 +146,10 @@ class CourseContentWizard(SessionWizardView):
         return HttpResponseRedirect('/edually/content/list')
 
 
-# class CourseContentEditView(UpdateView, CrispyFormMixin):
-#     model = CourseContent
-#     form_class = CourseContentForm
-#     template_name = "base_form.html"
-
-#     def get_success_url(self):
-#         return reverse("coursecontent_list")
+class CourseContentEditView(BaseEditView):
+    model = CourseContent
+    form_class = CourseContentEditForm
+    success_path = "coursecontent_list"
 
 
 class CourseContentDeleteView(BaseDeleteView):

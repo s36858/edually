@@ -1,3 +1,4 @@
+import os
 from django.conf import settings
 from django.db import models
 from django_fsm import FSMField, transition
@@ -30,6 +31,9 @@ class CourseContent(models.Model):
     name = models.CharField(max_length=200)
     path = models.FilePathField(
         path="./content", recursive=True)
+
+    def get_filename(self):
+        return str(os.path.basename(self.path))
 
 
 class CourseAction(models.Model):

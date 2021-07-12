@@ -70,6 +70,18 @@ class CourseContentFormStep2(forms.ModelForm):
         fields = ("name", "path", )
 
 
+class CourseContentEditForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "OK"))
+
+    class Meta:
+        model = CourseContent
+        fields = ("name",)
+
+
 class StudentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
