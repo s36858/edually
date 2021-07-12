@@ -104,3 +104,6 @@ class CourseWeek(models.Model):
 
     class Meta:
         unique_together = ['courseExecution_id', 'week']
+
+    def get_semester(self):
+        return str(self.courseExecution_id.semester.name)

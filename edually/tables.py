@@ -71,3 +71,37 @@ class StudentTable(tables.Table):
         template_name="edually/student/student_delete_column.html",
         extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
     )
+
+
+class SemesterOverviewTable(tables.Table):
+    class Meta:
+        model = Semester
+        attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
+        fields = ("id", "name", "start_date", "end_date")
+
+    show = TemplateColumn(
+        template_name="edually/semester/semester_show_column.html",
+        extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
+    )
+
+
+class CourseExecutionTable(tables.Table):
+    class Meta:
+        model = CourseExecution
+        attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
+        exclude = []
+
+    weeks = TemplateColumn(
+        template_name="edually/courseweek/courseweek_show_column.html",
+        extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
+    )
+
+
+class CourseWeekTable(tables.Table):
+    class Meta:
+        model = CourseWeek
+        attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
+        fields = ("get_semester", "week", "week_date",
+                  "send_mail", "send_doodle", "notes", "state")
+
+    get_semester = tables.columns.Column(verbose_name="Semester")

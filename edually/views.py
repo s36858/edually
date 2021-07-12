@@ -45,6 +45,27 @@ def studentList(request):
     RequestConfig(request).configure(table)
     return render(request, "edually/student/student_table.html", {"table": table})
 
+
+def semesterOverviewList(request):
+    data = Semester.objects.all()
+    table = SemesterOverviewTable(data)
+    RequestConfig(request).configure(table)
+    return render(request, "edually/semester/semester_table.html", {"table": table})
+
+
+def courseExecutionList(request, pk):
+    data = CourseExecution.objects.filter(semester=pk)
+    table = CourseExecutionTable(data)
+    RequestConfig(request).configure(table)
+    return render(request, "edually/courseexecution/courseexecution_table.html", {"table": table})
+
+
+def courseWeekList(request, pk):
+    data = CourseWeek.objects.filter(courseExecution_id=pk)
+    table = CourseWeekTable(data)
+    RequestConfig(request).configure(table)
+    return render(request, "base_table.html", {"table": table})
+
 # ----  Create, Edit, Delete Bases ----
 
 
@@ -179,21 +200,12 @@ class StudentDeleteView(BaseDeleteView):
 
 # ----  course execution ----
 
-# def courseExecutionList(request):
-#     data = CourseExecution.objects.all()
-#     table = CourseExecutionTable(data)
-#     RequestConfig(request).configure(table)
-#     return render(request, "edually/courseexecution/courseexecution_table.html", {"table": table})
-
-
-class CourseExecutionCreateView(CreateView, CrispyFormMixin):
+class CourseExecutionCreateView(BaseCreateView):
     model = CourseExecution
     form_class = CourseExecutionForm
-    template_name = "base_form.html"
-    success_url = "/edually/confirmation"
 
-    # def get_success_url(self):
-    #     return reverse("student_list")
+    def get_success_url(self, **kwargs):
+        return reverse("course_execution_list", kwargs={'pk': self.object.semester.id})
 
     def form_valid(self, form):
         self.object = form.save()

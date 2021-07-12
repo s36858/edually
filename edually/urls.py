@@ -32,6 +32,12 @@ urlpatterns = [
     path('course/edit/<pk>', views.CourseEditView.as_view(), name="course_edit"),
     path('course/create', views.CourseCreateView.as_view(), name="course_create"),
     # tables
+    path('course/week/list/<pk>', views.courseWeekList,
+         name="course_week_list"),
+    path('course/execution/list/<pk>', views.courseExecutionList,
+         name="course_execution_list"),
+    path('course/execution/semester/list',
+         views.semesterOverviewList, name="semester_overview_list"),
     path('student/list', views.studentList, name="student_list"),
     path('content/list', views.courseContentList, name="coursecontent_list"),
     path('semester/list', views.semesterList, name="semester_list"),
