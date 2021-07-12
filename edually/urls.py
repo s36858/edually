@@ -2,7 +2,11 @@ from django.urls import path
 
 from . import views
 
+
 urlpatterns = [
+    # course execution
+    path('course/execution/create', views.CourseExecutionCreateView.as_view(),
+         name="course_execution_create"),
     # student
     path('student/delete/<pk>', views.StudentDeleteView.as_view(),
          name="student_delete"),
@@ -13,9 +17,9 @@ urlpatterns = [
     # content
     path('content/delete/<pk>', views.CourseContentDeleteView.as_view(),
          name="coursecontent_delete"),
-    path('content/edit/<pk>', views.CourseContentEditView.as_view(),
+    path('content/edit/<pk>', views.CourseContentWizard.as_view(),
          name="coursecontent_edit"),
-    path('content/create', views.CourseContentCreateView.as_view(),
+    path('content/create', views.CourseContentWizard.as_view(),
          name="coursecontent_create"),
     # semester
     path('semester/delete/<pk>', views.SemesterDeleteView.as_view(),

@@ -1,0 +1,14 @@
+{% extends 'base.html' %} 
+{% load i18n %}
+{{ wizard.form.media }}
+
+{% block content %}
+<p>Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+<form action="" method="post">{% csrf_token %}
+<table>
+{{ wizard.management_form }}
+{% load crispy_forms_tags %}
+{% crispy wizard.form %}
+</form>
+
+{% endblock %}

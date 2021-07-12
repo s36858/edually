@@ -8,6 +8,13 @@ COURSE_CATEGORY_CHOICES = {
 
 }
 
+LECTURE_DAYS_CHOICES = {
+    ("MON", "Monday"), ("TUE", 'Tuesday'),
+    ("Wed", "Wednesday"), ("THU", "Thursday"),
+    ("FRI", "Friday"),  ("SAT", "Saturday"), ("SUN", "Sunday")
+
+}
+
 
 class CourseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -20,7 +27,7 @@ class CourseForm(forms.ModelForm):
 
     class Meta:
         model = Course
-        fields = ("name", "category")
+        fields = ("name", "category", "folder_path")
 
 
 class SemesterForm(forms.ModelForm):
@@ -35,7 +42,7 @@ class SemesterForm(forms.ModelForm):
         fields = ("name", "start_date", "end_date", )
 
 
-class CourseContentForm(forms.ModelForm):
+class CourseContentFormStep1(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -44,7 +51,23 @@ class CourseContentForm(forms.ModelForm):
 
     class Meta:
         model = CourseContent
-        fields = ("course", "name", "path", )
+        fields = ("course",)
+
+
+class CourseContentFormStep2(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        folder_path = kwargs.pop('folder_path', None).replace('\\', '/')
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "OK"))
+        self.fields["path"] = forms.FilePathField(
+            path=folder_path, recursive=True
+        )
+
+    class Meta:
+        model = CourseContent
+        fields = ("name", "path", )
 
 
 class StudentForm(forms.ModelForm):
@@ -57,3 +80,18 @@ class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
         fields = ("student_id", "firstname", "lastname", "email")
+
+
+class CourseExecutionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "OK"))
+
+    lecture_day = forms.ChoiceField(choices=LECTURE_DAYS_CHOICES)
+
+    class Meta:
+        model = CourseExecution
+        fields = ("semester", "course", "lecture_day",
+                  "start_time", "end_time", "enrolled_count")

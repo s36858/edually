@@ -1,4 +1,3 @@
-import os
 from django.conf import settings
 from django.db import models
 from django_fsm import FSMField, transition
@@ -11,11 +10,15 @@ class Semester(models.Model):
     end_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def __str__(self):
+        return self.name
+
 
 class Course(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     name = models.CharField(max_length=200)
     category = models.CharField(max_length=200)
+    folder_path = models.CharField(max_length=200, default="")
 
     def __str__(self):
         return self.name + " (" + self.category + ")"
@@ -25,14 +28,15 @@ class CourseContent(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     course = models.ForeignKey(Course, on_delete=models.PROTECT)
     name = models.CharField(max_length=200)
-    path = models.FilePathField(path=settings.FILE_PATH_FIELD_DIRECTORY)
+    path = models.FilePathField(
+        path="./content", recursive=True)
 
 
 class CourseAction(models.Model):
     id = models.AutoField(primary_key=True, editable=False)
     course = models.ForeignKey(Course,  on_delete=models.PROTECT)
     name = models.CharField(max_length=200)
-    category = models.CharField(max_length=200)  # email / doodle
+    category = models.CharField(max_length=200)
     template = models.TextField(max_length=300)
 
 
@@ -66,7 +70,7 @@ class CourseWeek(models.Model):
         CourseContent)
     course_action = models.ManyToManyField(CourseAction)
     notes = models.TextField(blank=True, null=True, max_length=300)
-    state = FSMField(default="new")  # email #done
+    state = FSMField(default="new")
 
     class Meta:
         unique_together = ['courseExecution_id', 'week']

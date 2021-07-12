@@ -16,26 +16,6 @@ def app():
     # email = input("Email: \n")
     eventTitle = input("Event Title: \n")
     description = input("Description: \n")
-    # location = input("Location: \n")
-    # fromDate = input(
-    #     "Date(Day 1):\n(Format: YY-MM-DD)\n(Example: 2017-01-01) \n")
-    # fromDate = fromDate[0:4] + fromDate[5:7] + fromDate[8:10]
-    # _time = input("Time Interval:\n(Example- 07:00-14:00) \n")
-    # _time = _time[0:2] + _time[3:8] + _time[9:11]
-    # _time2 = input("Time Interval(2): \n")
-    # _time2 = _time2[0:2] + _time2[3:8] + _time2[9:11]
-    # fromDate2 = input("Date(Day 2): \n")
-    # fromDate2 = fromDate2[0:4] + fromDate2[5:7] + fromDate2[8:10]
-    # _dtime = input("Time Interval: \n")
-    # _dtime = _dtime[0:2] + _dtime[3:8] + _dtime[9:11]
-    # _dtime2 = input("Time Interval(2, Optional): \n")
-    # _dtime2 = _dtime2[0:2] + _dtime2[3:8] + _dtime2[9:11]
-    # fromDate3 = input("Date(Day 3): \n")
-    # fromDate3 = fromDate3[0:4] + fromDate3[5:7] + fromDate3[8:10]
-    # _ddtime = input("Time Interval: \n")
-    # _ddtime = _ddtime[0:2] + _ddtime[3:8] + _ddtime[9:11]
-    # _ddtime2 = input("Time Interval(2, Optional): \n")
-    # _ddtime2 = _ddtime2[0:2] + _ddtime2[3:8] + _ddtime2[9:11]
 
     doodUrl = "http://doodle.com/create?type=date&locale=en&title=" + \
         eventTitle

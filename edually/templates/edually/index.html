@@ -37,5 +37,19 @@
   </div>
 </div>
 <p></p>
-
+<div style="text-align: center">
+  <div style="margin-bottom: 15px"></div>
+  <div class="dropdown">
+    <button
+      class="btn btn-primary btn-lg btn-block dropdown-toggle"
+      type="button"
+      data-toggle="dropdown"
+    >
+      PLANER
+    </button>
+    <div class="dropdown-content">
+      <a class="dropdown-item btn-lg" href="{% url 'course_execution_create' %}">add course to semester</a>
+    </div>
+  </div>
+</div>
 {% endblock %}
