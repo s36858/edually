@@ -10,7 +10,7 @@ COURSE_CATEGORY_CHOICES = {
 
 LECTURE_DAYS_CHOICES = {
     ("MON", "Monday"), ("TUE", 'Tuesday'),
-    ("Wed", "Wednesday"), ("THU", "Thursday"),
+    ("WED", "Wednesday"), ("THU", "Thursday"),
     ("FRI", "Friday"),  ("SAT", "Saturday"), ("SUN", "Sunday")
 
 }

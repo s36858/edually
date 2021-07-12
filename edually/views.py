@@ -195,6 +195,12 @@ class CourseExecutionCreateView(CreateView, CrispyFormMixin):
     # def get_success_url(self):
     #     return reverse("student_list")
 
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.save()
+        self.object.create_weeks()
+        return super().form_valid(form)
+
 
 # class CourseExecutionView(UpdateView, CrispyFormMixin):
 #     model = CourseExecution

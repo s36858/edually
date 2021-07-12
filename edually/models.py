@@ -1,7 +1,13 @@
+import datetime
 import os
 from django.conf import settings
 from django.db import models
 from django_fsm import FSMField, transition
+from django.utils import timezone
+from dateutil import rrule
+
+LECTURE_DAYS_WEEK_NR = {'MON': 0, 'TUE': 1, 'FRI': 4,
+                        'WED': 2, 'THU': 3, 'SUN': 6, 'SAT': 5}
 
 
 class Semester(models.Model):
@@ -63,11 +69,31 @@ class CourseExecution(models.Model):
     class Meta:
         unique_together = ['semester', 'course']
 
+    def next_weekday(self, start_date):
+        week_number = LECTURE_DAYS_WEEK_NR[self.lecture_day]
+        days_ahead = week_number - start_date.weekday()
+        if days_ahead <= 0:
+            days_ahead += 7
+        return start_date + datetime.timedelta(days_ahead)
+
+    def create_weeks(self):
+        start_date = self.semester.start_date
+        end_date = self.semester.end_date
+        next_date = self.next_weekday(start_date)
+        weeks = rrule.rrule(rrule.WEEKLY, dtstart=next_date, until=end_date)
+        week_count = 1
+        for w in weeks:
+            courseweek_obj = CourseWeek.objects.create(
+                courseExecution_id=self, week=week_count, week_date=w)
+            courseweek_obj.save()
+            week_count = week_count+1
+
 
 class CourseWeek(models.Model):
     courseExecution_id = models.ForeignKey(
         CourseExecution, on_delete=models.CASCADE)
     week = models.IntegerField()
+    week_date = models.DateField(default=timezone.now)
     send_mail = models.BooleanField(default=False)
     send_doodle = models.BooleanField(default=False)
     course_content = models.ManyToManyField(
