@@ -1,11 +1,13 @@
 from django.shortcuts import render, reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
 from django_tables2 import RequestConfig
 from .models import Course
 from .forms import *
 from .tables import *
 from formtools.wizard.views import SessionWizardView
 from django.http import HttpResponseRedirect
+from django.forms.models import model_to_dict
 
 
 def index(request):
@@ -37,6 +39,13 @@ def courseContentList(request):
     table = CourseContentTable(data)
     RequestConfig(request).configure(table)
     return render(request, "edually/coursecontent/coursecontent_table.html", {"table": table})
+
+
+def courseActionList(request):
+    data = CourseAction.objects.all()
+    table = CourseActionTable(data)
+    RequestConfig(request).configure(table)
+    return render(request, "edually/courseaction/courseaction_table.html", {"table": table})
 
 
 def studentList(request):
@@ -177,6 +186,25 @@ class CourseContentDeleteView(BaseDeleteView):
     model = CourseContent
     success_path = "coursecontent_list"
 
+# ----  course_action ----
+
+
+class CourseActionCreateView(BaseCreateView):
+    model = CourseAction
+    form_class = CourseActionForm
+    success_path = "courseaction_list"
+
+
+class CourseActionEditView(BaseEditView):
+    model = CourseAction
+    form_class = CourseActionForm
+    success_path = "courseaction_list"
+
+
+class CourseActionDeleteView(BaseDeleteView):
+    model = CourseAction
+    success_path = "courseaction_list"
+
 
 # ---- student  ----
 
@@ -200,6 +228,7 @@ class StudentDeleteView(BaseDeleteView):
 
 # ----  course execution ----
 
+
 class CourseExecutionCreateView(BaseCreateView):
     model = CourseExecution
     form_class = CourseExecutionForm
@@ -214,17 +243,47 @@ class CourseExecutionCreateView(BaseCreateView):
         return super().form_valid(form)
 
 
-# class CourseExecutionView(UpdateView, CrispyFormMixin):
-#     model = CourseExecution
-#     form_class = StudentForm
-#     template_name = "base_form.html"
+class CourseExecutionEditView(BaseEditView):
+    model = CourseExecution
+    form_class = CourseExecutionForm
 
-#     def get_success_url(self):
-#         return reverse("student_list")
+    def get_success_url(self, **kwargs):
+        return reverse("course_execution_list", kwargs={'pk': self.object.semester.id})
 
 
-# class CourseExecutionDeleteView(DeleteView, CrispyFormMixin):
-#     model = CourseExecution
+class CourseExecutionDeleteView(BaseDeleteView):
+    model = CourseExecution
+    success_path = "confirmation"
 
-#     def get_success_url(self):
-#         return reverse("student_list")
+
+# ----  course week ----
+
+
+class CourseWeekEditView(BaseEditView):
+    model = CourseWeek
+    form_class = CourseWeekForm
+
+    def get_success_url(self, **kwargs):
+        return reverse("course_week_list", kwargs={'pk': self.object.courseExecution_id.id})
+
+
+class CourseWeekDetailView(DetailView):
+    model = CourseWeek
+
+    def get_object(self):
+        queryset = self.get_queryset()
+        pk = self.kwargs.get(self.pk_url_kwarg)
+        if pk:
+            queryset = queryset.filter(pk=pk)
+        else:
+            raise AttributeError(
+                "View %s must be called with a "
+                "pk in the URLconf." % self.__class__.__name__
+            )
+        obj = queryset.get()
+        record_dict = model_to_dict(obj)
+        clean_record_dict = {}
+        for key, value in record_dict.items():
+            key = key.replace("_", " ").capitalize()
+            clean_record_dict[key] = value
+        return clean_record_dict

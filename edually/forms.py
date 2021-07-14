@@ -15,6 +15,8 @@ LECTURE_DAYS_CHOICES = {
 
 }
 
+COURSE_ACTION_CHOICES = {("E-Mail", "E-Mail"), ("Umfrage", "Umfrage")}
+
 
 class CourseForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -82,6 +84,20 @@ class CourseContentEditForm(forms.ModelForm):
         fields = ("name",)
 
 
+class CourseActionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "OK"))
+
+    category = forms.ChoiceField(choices=COURSE_ACTION_CHOICES)
+
+    class Meta:
+        model = CourseAction
+        fields = ("course", 'name', 'category', 'template')
+
+
 class StudentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -107,3 +123,15 @@ class CourseExecutionForm(forms.ModelForm):
         model = CourseExecution
         fields = ("semester", "course", "lecture_day",
                   "start_time", "end_time", "enrolled_count")
+
+
+class CourseWeekForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = "post"
+        self.helper.add_input(Submit("submit", "OK"))
+
+    class Meta:
+        model = CourseWeek
+        fields = ('send_mail', 'send_doodle', 'course_content')

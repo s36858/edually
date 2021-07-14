@@ -1,0 +1,7 @@
+{% extends 'base.html' %} {% block content %}
+<form method="post">
+  {% csrf_token %}
+  <p>Are you sure you want to delete course execution {{ object.id }} ({{object.semester}}, {{object.course}})?</p>
+  <input class="btn btn-primary" type="submit" value="Confirm" />
+</form>
+{% endblock %}

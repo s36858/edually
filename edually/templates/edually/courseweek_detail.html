@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block content %}
+<table class="table">
+    {% for key,value in object.items %}
+    <tr>
+        {% if key == "Course content" %}
+            <tr>
+            {% for content in value %}
+            <td style="white-space:nowrap;"><b>{{key}}</b>:</td>
+            <td>{{content}}</td>
+            </tr>
+            {% endfor %}
+        {% else %}
+        <td style="white-space:nowrap;"><b>{{key}}</b>:</td>
+        {% if "http" in value|truncatechars:5 %}
+        <td><a href={{value}}>{{value}}</a></td>
+        {% else %}
+        <td>{{value}}</td>
+        {% endif %}
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+<br>
+<button class="btn btn btn-primary my-2 my-sm-0" onclick="goBack()">Go back</button>
+
+<script>
+    function goBack() {
+        window.history.back();
+    }
+</script>
+{% endblock %}

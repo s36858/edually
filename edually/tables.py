@@ -56,6 +56,23 @@ class CourseContentTable(tables.Table):
     )
 
 
+class CourseActionTable(tables.Table):
+    class Meta:
+        model = CourseAction
+        attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
+        exclude = []
+
+    edit = TemplateColumn(
+        template_name="edually/courseaction/courseaction_edit_column.html",
+        extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
+    )
+
+    delete = TemplateColumn(
+        template_name="edually/courseaction/courseaction_delete_column.html",
+        extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
+    )
+
+
 class StudentTable(tables.Table):
     class Meta:
         model = Student
@@ -96,6 +113,16 @@ class CourseExecutionTable(tables.Table):
         extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
     )
 
+    edit = TemplateColumn(
+        template_name="edually/courseexecution/courseexecution_edit_column.html",
+        extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
+    )
+
+    delete = TemplateColumn(
+        template_name="edually/courseexecution/courseexecution_delete_column.html",
+        extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
+    )
+
 
 class CourseWeekTable(tables.Table):
     class Meta:
@@ -105,3 +132,13 @@ class CourseWeekTable(tables.Table):
                   "send_mail", "send_doodle", "notes", "state")
 
     get_semester = tables.columns.Column(verbose_name="Semester")
+
+    edit = TemplateColumn(
+        template_name="edually/courseweek/courseweek_edit_column.html",
+        extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
+    )
+
+    detail = TemplateColumn(
+        template_name="edually/courseweek/courseweek_detail_column.html",
+        extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False
+    )

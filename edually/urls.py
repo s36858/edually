@@ -4,7 +4,16 @@ from . import views
 
 
 urlpatterns = [
+    # course week
+    path('course/week/detail/<pk>', views.CourseWeekDetailView.as_view(),
+         name="course_week_detail"),
+    path('course/week/edit/<pk>', views.CourseWeekEditView.as_view(),
+         name="course_week_edit"),
     # course execution
+    path('course/execution/delete/<pk>', views.CourseExecutionDeleteView.as_view(),
+         name="course_execution_delete"),
+    path('course/execution/edit/<pk>', views.CourseExecutionEditView.as_view(),
+         name="course_execution_edit"),
     path('course/execution/create', views.CourseExecutionCreateView.as_view(),
          name="course_execution_create"),
     # student
@@ -14,6 +23,13 @@ urlpatterns = [
          name="student_edit"),
     path('student/create', views.StudentCreateView.as_view(),
          name="student_create"),
+    # action
+    path('action/delete/<pk>', views.CourseActionDeleteView.as_view(),
+         name="courseaction_delete"),
+    path('action/edit/<pk>', views.CourseActionEditView.as_view(),
+         name="courseaction_edit"),
+    path('action/create', views.CourseActionCreateView.as_view(),
+         name="courseaction_create"),
     # content
     path('content/delete/<pk>', views.CourseContentDeleteView.as_view(),
          name="coursecontent_delete"),
@@ -39,6 +55,7 @@ urlpatterns = [
     path('course/execution/semester/list',
          views.semesterOverviewList, name="semester_overview_list"),
     path('student/list', views.studentList, name="student_list"),
+    path('action/list', views.courseActionList, name="courseaction_list"),
     path('content/list', views.courseContentList, name="coursecontent_list"),
     path('semester/list', views.semesterList, name="semester_list"),
     path('course/list', views.courseList, name="course_list"),
