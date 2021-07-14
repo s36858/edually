@@ -5,12 +5,15 @@ from googleapiclient.discovery import build
 from google_auth_oauthlib.flow import InstalledAppFlow
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
+from datetime import timedelta, datetime
+import pytz
+
 
 # If modifying these scopes, delete the file token.json.
-SCOPES = ['https://www.googleapis.com/auth/calendar.readonly']
+SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 
-def main():
+def credentials():
     """Shows basic usage of the Google Calendar API.
     Prints the start and name of the next 10 events on the user's calendar.
     """
@@ -31,14 +34,17 @@ def main():
         # Save the credentials for the next run
         with open('token.json', 'w') as token:
             token.write(creds.to_json())
+    return creds
 
+
+def get_events(number):
+    creds = credentials()
     service = build('calendar', 'v3', credentials=creds)
-
     # Call the Calendar API
-    now = datetime.datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
-    print('Getting the upcoming 10 events')
+    now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+    print('Getting the upcoming %s events' % number)
     events_result = service.events().list(calendarId='primary', timeMin=now,
-                                          maxResults=10, singleEvents=True,
+                                          maxResults=number, singleEvents=True,
                                           orderBy='startTime').execute()
     events = events_result.get('items', [])
 
@@ -49,5 +55,43 @@ def main():
         print(start, event['summary'])
 
 
+def create_event(start_date, start_time, title, description, length, reminderMinutes):
+    creds = credentials()
+    service = build('calendar', 'v3', credentials=creds)
+    start_date = datetime.strptime(
+        start_date, '%Y-%m-%d')
+    start_time = datetime.strptime(
+        start_time, '%H:%M') - timedelta(hours=2, minutes=0)
+    start_datetime = datetime.combine(datetime.date(start_date),
+                                      datetime.time(start_time)).replace(tzinfo=pytz.UTC)
+    event = (
+        service.events()
+        .insert(
+            calendarId="primary",
+            body={
+                "summary": title,
+                "description": description,
+                "start": {"dateTime": start_datetime.isoformat()},
+                "end": {
+                    "dateTime": (start_datetime + timedelta(minutes=length)).isoformat()
+                },
+                "reminders": {
+                    "useDefault": "false",
+                    "overrides": [
+                        {
+                            "method": "email", "minutes": reminderMinutes
+                        },
+                        {"method": "popup", "minutes": reminderMinutes},
+                    ]
+                }
+            },
+        )
+        .execute()
+    )
+
+    print(event)
+
+
 if __name__ == '__main__':
-    main()
+    create_event("2021-07-14", "08:00", "Test 3",
+                 "Das ist die Beschreibung", 45, 2)
