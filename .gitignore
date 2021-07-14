@@ -131,3 +131,6 @@ dmypy.json
 staticfiles/
 
 content/
+
+credentials.json
+token.json
