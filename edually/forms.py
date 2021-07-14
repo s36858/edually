@@ -137,7 +137,7 @@ class CourseWeekForm(forms.ModelForm):
     add_to_calendar = forms.BooleanField(
         label="Add week to calendar.", required=False)
     reminder = forms.IntegerField(
-        label="Set reminder in minutes", help_text="e.g. 1 Day = 360 minutes, 1 week = 2520 minutes", required=False)
+        label="Set reminder in minutes", help_text="e.g. 1 Day = 1440,  minutes, 1 week = 10080 minutes", required=False)
 
     def __init__(self, *args, **kwargs):
         course = kwargs.pop('course', None)
