@@ -132,10 +132,24 @@ class CourseWeekForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.add_input(Submit("submit", "OK"))
 
-        # self.fields['course_action'].queryset = CourseAction.objects.filter(
-        #     category="E-Mail")
+    def clean(self):
+        cleaned_data = super().clean()
+        add_week_to_calendar = cleaned_data.get("add_to_calendar")
+        set_reminder = cleaned_data.get("reminder")
+        if add_week_to_calendar:
+            if set_reminder is None:
+                self._errors['reminder'] = self.error_class(
+                    ["Please set a reminder."])
+
+    add_to_calendar = forms.BooleanField(
+        label="Add week to calendar.", required=False)
+    reminder = forms.IntegerField(
+        label="Set reminder in minutes", help_text="e.g. 1 Day = 360 minutes, 1 week = 2520 minutes", required=False)
+
+    # self.fields['course_action'].queryset = CourseAction.objects.filter(
+    #     category="E-Mail")
 
     class Meta:
         model = CourseWeek
         fields = ('send_mail', 'send_doodle',
-                  'course_action', 'course_content', )
+                  'course_action', 'course_content', "add_to_calendar", "reminder")

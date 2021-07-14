@@ -266,6 +266,12 @@ class CourseWeekEditView(BaseEditView):
     def get_success_url(self, **kwargs):
         return reverse("course_week_list", kwargs={'pk': self.object.courseExecution_id.id})
 
+    def form_valid(self, form):
+        self.object = form.save()
+        if self.object.add_to_calendar:
+            self.object.add_to_google_calendar()
+        return super().form_valid(form)
+
 
 class CourseWeekDetailView(DetailView):
     model = CourseWeek

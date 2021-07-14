@@ -129,9 +129,11 @@ class CourseWeekTable(tables.Table):
         model = CourseWeek
         attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
         fields = ("get_semester", "week", "week_date",
-                  "send_mail", "send_doodle", "notes", "state")
+                  "send_mail", "send_doodle", "notes")
 
     get_semester = tables.columns.Column(verbose_name="Semester")
+    send_mail = tables.columns.Column(verbose_name="Send E-Mail")
+    send_doodle = tables.columns.Column(verbose_name="Send Poll")
 
     edit = TemplateColumn(
         template_name="edually/courseweek/courseweek_edit_column.html",

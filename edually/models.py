@@ -5,6 +5,7 @@ from django.db import models
 from django_fsm import FSMField, transition
 from django.utils import timezone
 from dateutil import rrule
+import edually.google_calendar as google_calendar
 
 LECTURE_DAYS_WEEK_NR = {'MON': 0, 'TUE': 1, 'FRI': 4,
                         'WED': 2, 'THU': 3, 'SUN': 6, 'SAT': 5}
@@ -125,12 +126,17 @@ class CourseWeek(models.Model):
         CourseExecution, on_delete=models.CASCADE)
     week = models.IntegerField()
     week_date = models.DateField(default=timezone.now)
-    send_mail = models.BooleanField(default=False)
-    send_doodle = models.BooleanField(default=False)
+    send_mail = models.BooleanField(
+        default=False, verbose_name="E-Mail needs to be send this week.")
+    send_doodle = models.BooleanField(
+        default=False, verbose_name="Poll is needed this week.")
     course_content = models.ManyToManyField(
         CourseContent, blank=True)
-    course_action = models.ManyToManyField(CourseAction, blank=True)
+    course_action = models.ManyToManyField(
+        CourseAction, blank=True, verbose_name="Course templates")
     notes = models.TextField(blank=True, null=True, max_length=300)
+    add_to_calendar = models.BooleanField(blank=True, null=True)
+    reminder = models.IntegerField(blank=True, null=True)
     state = FSMField(default="new")
 
     class Meta:
@@ -142,3 +148,15 @@ class CourseWeek(models.Model):
     def update_date(self, date):
         self.week_date = date
         self.save()
+
+    def add_to_google_calendar(self):
+        title = "Test Titel"
+        description = "Test Beschreibung"
+        end_datetime = datetime.datetime.combine(
+            datetime.date.today(), self.courseExecution_id.end_time)
+        start_datetime = datetime.datetime.combine(
+            datetime.date.today(), self.courseExecution_id.start_time)
+        length_in_hours = end_datetime - start_datetime
+        length_in_min = length_in_hours.total_seconds() / 60.0
+        google_calendar.create_event(
+            start_date=self.week_date, start_time=self.courseExecution_id.start_time, title=title, description=description, length=length_in_min, reminderMinutes=self.reminder)

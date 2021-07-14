@@ -40,8 +40,7 @@ def credentials():
 def get_events(number):
     creds = credentials()
     service = build('calendar', 'v3', credentials=creds)
-    # Call the Calendar API
-    now = datetime.utcnow().isoformat() + 'Z'  # 'Z' indicates UTC time
+    now = datetime.utcnow().isoformat() + 'Z'
     print('Getting the upcoming %s events' % number)
     events_result = service.events().list(calendarId='primary', timeMin=now,
                                           maxResults=number, singleEvents=True,
@@ -58,11 +57,9 @@ def get_events(number):
 def create_event(start_date, start_time, title, description, length, reminderMinutes):
     creds = credentials()
     service = build('calendar', 'v3', credentials=creds)
-    start_date = datetime.strptime(
-        start_date, '%Y-%m-%d')
     start_time = datetime.strptime(
-        start_time, '%H:%M') - timedelta(hours=2, minutes=0)
-    start_datetime = datetime.combine(datetime.date(start_date),
+        str(start_time), '%H:%M:%S') - timedelta(hours=2, minutes=0)
+    start_datetime = datetime.combine(start_date,
                                       datetime.time(start_time)).replace(tzinfo=pytz.UTC)
     event = (
         service.events()
@@ -90,8 +87,3 @@ def create_event(start_date, start_time, title, description, length, reminderMin
     )
 
     print(event)
-
-
-if __name__ == '__main__':
-    create_event("2021-07-14", "08:00", "Test 3",
-                 "Das ist die Beschreibung", 45, 2)
