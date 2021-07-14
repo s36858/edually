@@ -132,6 +132,10 @@ class CourseWeekForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.add_input(Submit("submit", "OK"))
 
+        # self.fields['course_action'].queryset = CourseAction.objects.filter(
+        #     category="E-Mail")
+
     class Meta:
         model = CourseWeek
-        fields = ('send_mail', 'send_doodle', 'course_content')
+        fields = ('send_mail', 'send_doodle',
+                  'course_action', 'course_content', )

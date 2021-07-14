@@ -52,6 +52,12 @@ class CourseAction(models.Model):
     category = models.CharField(max_length=200)
     template = models.TextField(max_length=300)
 
+    def __str__(self):
+        return str(self.name)
+
+    def get_category_by_mail(self):
+        return self.objects.filter(category="E-Mail")
+
 
 class Student(models.Model):
     student_id = models.CharField(primary_key=True, max_length=10)
@@ -122,8 +128,8 @@ class CourseWeek(models.Model):
     send_mail = models.BooleanField(default=False)
     send_doodle = models.BooleanField(default=False)
     course_content = models.ManyToManyField(
-        CourseContent)
-    course_action = models.ManyToManyField(CourseAction)
+        CourseContent, blank=True)
+    course_action = models.ManyToManyField(CourseAction, blank=True)
     notes = models.TextField(blank=True, null=True, max_length=300)
     state = FSMField(default="new")
 

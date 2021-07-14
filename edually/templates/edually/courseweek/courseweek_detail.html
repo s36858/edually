@@ -3,11 +3,18 @@
 <table class="table">
     {% for key,value in object.items %}
     <tr>
-        {% if key == "Course content" %}
+        {% if key == "Course content"%}
             <tr>
             {% for content in value %}
             <td style="white-space:nowrap;"><b>{{key}}</b>:</td>
             <td>{{content}}</td>
+            </tr>
+            {% endfor %}
+        {% elif key == "Course action" %}
+        <tr>
+            {% for action in value %}
+            <td style="white-space:nowrap;"><b>{{key}}</b>:</td>
+            <td>{{action}}</td>
             </tr>
             {% endfor %}
         {% else %}

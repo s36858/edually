@@ -269,6 +269,7 @@ class CourseWeekEditView(BaseEditView):
 
 class CourseWeekDetailView(DetailView):
     model = CourseWeek
+    template_name = "edually/courseweek/courseweek_detail.html"
 
     def get_object(self):
         queryset = self.get_queryset()
