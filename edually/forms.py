@@ -39,6 +39,12 @@ class SemesterForm(forms.ModelForm):
         self.helper.form_method = "post"
         self.helper.add_input(Submit("submit", "OK"))
 
+    start_date = forms.DateField(
+        help_text="e.g. 2021-02-01")
+
+    end_date = forms.DateField(
+        help_text="e.g. 2021-02-31")
+
     class Meta:
         model = Semester
         fields = ("name", "start_date", "end_date", )
@@ -127,10 +133,13 @@ class CourseExecutionForm(forms.ModelForm):
 
 class CourseWeekForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
+        course = kwargs.pop('course', None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.add_input(Submit("submit", "OK"))
+        self.fields['course_content'].queryset = CourseContent.objects.filter(
+            course=course)
 
     def clean(self):
         cleaned_data = super().clean()

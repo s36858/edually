@@ -72,8 +72,10 @@ def courseExecutionList(request, pk):
 def courseWeekList(request, pk):
     data = CourseWeek.objects.filter(courseExecution_id=pk)
     table = CourseWeekTable(data)
+    semester = data.first().get_semester()
+    course = data.first().courseExecution_id.course
     RequestConfig(request).configure(table)
-    return render(request, "base_table.html", {"table": table})
+    return render(request, "edually/courseweek/courseweek_table.html", {"table": table, "semester": semester, "course": course})
 
 # ----  Create, Edit, Delete Bases ----
 
@@ -265,6 +267,13 @@ class CourseWeekEditView(BaseEditView):
 
     def get_success_url(self, **kwargs):
         return reverse("course_week_list", kwargs={'pk': self.object.courseExecution_id.id})
+
+    def get_form_kwargs(self):
+        kwargs = super(CourseWeekEditView, self).get_form_kwargs()
+        obj = CourseWeek.objects.get(id=self.kwargs['pk'])
+        course = obj.courseExecution_id.course.id
+        kwargs['course'] = course
+        return kwargs
 
     def form_valid(self, form):
         self.object = form.save()

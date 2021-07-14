@@ -1,3 +1,4 @@
+from tempfile import template
 from django_tables2 import tables, TemplateColumn
 from .models import *
 from django.conf import settings
@@ -61,6 +62,9 @@ class CourseActionTable(tables.Table):
         model = CourseAction
         attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
         exclude = []
+
+    template = TemplateColumn(
+        '<data-toggle="tooltip" title="{{record.template}}">{{record.template|truncatewords:20}}')
 
     edit = TemplateColumn(
         template_name="edually/courseaction/courseaction_edit_column.html",
@@ -128,12 +132,12 @@ class CourseWeekTable(tables.Table):
     class Meta:
         model = CourseWeek
         attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
-        fields = ("get_semester", "week", "week_date",
+        fields = ("week", "week_date",
                   "send_mail", "send_doodle", "notes")
 
-    get_semester = tables.columns.Column(verbose_name="Semester")
-    send_mail = tables.columns.Column(verbose_name="Send E-Mail")
-    send_doodle = tables.columns.Column(verbose_name="Send Poll")
+    #get_semester = tables.columns.Column(verbose_name="Semester")
+    send_mail = tables.columns.BooleanColumn(verbose_name="Send E-Mail")
+    send_doodle = tables.columns.BooleanColumn(verbose_name="Send Poll")
 
     edit = TemplateColumn(
         template_name="edually/courseweek/courseweek_edit_column.html",

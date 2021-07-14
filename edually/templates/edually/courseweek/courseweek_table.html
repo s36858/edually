@@ -2,7 +2,12 @@
 {% load django_tables2 %}
 {% load bootstrap4 %}
 {% block content %}
-<a class="btn btn-primary" href="#">add content</a>
+
+<div style="text-align:center"><h3>
+  <small class="text-muted">{{semester}}</small>
+  {{course}}
+  
+</h3></div>
 <p></p>
 {% render_table table %}
 {% endblock %}
