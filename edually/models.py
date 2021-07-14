@@ -134,7 +134,7 @@ class CourseWeek(models.Model):
         CourseContent, blank=True)
     course_action = models.ManyToManyField(
         CourseAction, blank=True, verbose_name="Course templates")
-    notes = models.TextField(blank=True, null=True, max_length=300)
+    notes = models.TextField(blank=True, null=True, max_length=26500)
     add_to_calendar = models.BooleanField(blank=True, null=True)
     reminder = models.IntegerField(blank=True, null=True)
     state = FSMField(default="new")

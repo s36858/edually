@@ -138,6 +138,9 @@ class CourseWeekTable(tables.Table):
     send_mail = tables.columns.BooleanColumn(verbose_name="Send E-Mail")
     send_doodle = tables.columns.BooleanColumn(verbose_name="Send Poll")
 
+    notes = TemplateColumn(
+        '<data-toggle="tooltip" title="{{record.notes}}">{{record.notes|truncatewords:20}}')
+
     edit = TemplateColumn(
         template_name="edually/courseweek/courseweek_edit_column.html",
         extra_context={"eduallydesign": settings.EDUALLYDESIGN, }, orderable=False

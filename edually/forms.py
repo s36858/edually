@@ -168,7 +168,7 @@ class CourseWeekForm(forms.ModelForm):
     class Meta:
         model = CourseWeek
         fields = ('week_date', 'send_mail', 'send_doodle',
-                  'course_action', 'course_content', "add_to_calendar", "reminder")
+                  'course_action', 'course_content', "notes", "add_to_calendar", "reminder")
 
     field_order = ['course', 'week_date', 'send_mail', 'send_doodle',
-                   'course_action', 'course_content', "add_to_calendar", "reminder"]
+                   'course_action', 'course_content', "notes", "add_to_calendar", "reminder"]

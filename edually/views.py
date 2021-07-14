@@ -264,9 +264,10 @@ class CourseExecutionDeleteView(BaseDeleteView):
 class CourseWeekEditView(BaseEditView):
     model = CourseWeek
     form_class = CourseWeekForm
+    template_name = "edually/courseweek/courseweek_form.html"
 
     def get_success_url(self, **kwargs):
-        return reverse("course_week_list", kwargs={'pk': self.object.courseExecution_id.id})
+        return reverse('course_week_edit', kwargs={'pk': self.kwargs['pk']})
 
     def get_form_kwargs(self):
         kwargs = super(CourseWeekEditView, self).get_form_kwargs()
@@ -274,6 +275,18 @@ class CourseWeekEditView(BaseEditView):
         course = obj.courseExecution_id.course.id
         kwargs['course'] = course
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        obj = CourseWeek.objects.get(id=self.kwargs['pk'])
+        next_week = obj.week + 1
+        try:
+            obj_next_week = CourseWeek.objects.get(
+                courseExecution_id=obj.courseExecution_id, week=next_week)
+            context['next_week'] = obj_next_week
+        except CourseWeek.DoesNotExist:
+            context['next_week'] = None
+        return context
 
     def form_valid(self, form):
         self.object = form.save()

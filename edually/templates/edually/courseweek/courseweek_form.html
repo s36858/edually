@@ -1,0 +1,11 @@
+{% extends 'base.html' %} 
+{% load crispy_forms_tags %} 
+{% block content %} 
+{% crispy form %} 
+<a class="{{eduallydesign.table.table_btn}} btn btn-info" href="{% url 'course_week_list' object.courseExecution_id.id %}">back to list</a>
+{% if next_week.id %}
+<a class="{{eduallydesign.table.table_btn}} btn btn-info" href="{% url 'course_week_edit' next_week.id %}">edit next week</a>
+{% endif %}
+{% endblock %}
+
+
