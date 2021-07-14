@@ -133,9 +133,8 @@ class CourseWeekTable(tables.Table):
         model = CourseWeek
         attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
         fields = ("week", "week_date",
-                  "send_mail", "send_doodle", "notes")
+                  "send_mail", "send_doodle", "notes", "state")
 
-    #get_semester = tables.columns.Column(verbose_name="Semester")
     send_mail = tables.columns.BooleanColumn(verbose_name="Send E-Mail")
     send_doodle = tables.columns.BooleanColumn(verbose_name="Send Poll")
 

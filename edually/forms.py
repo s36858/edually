@@ -132,13 +132,28 @@ class CourseExecutionForm(forms.ModelForm):
 
 
 class CourseWeekForm(forms.ModelForm):
+
+    course = forms.CharField()
+    add_to_calendar = forms.BooleanField(
+        label="Add week to calendar.", required=False)
+    reminder = forms.IntegerField(
+        label="Set reminder in minutes", help_text="e.g. 1 Day = 360 minutes, 1 week = 2520 minutes", required=False)
+
     def __init__(self, *args, **kwargs):
         course = kwargs.pop('course', None)
         super().__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_method = "post"
         self.helper.add_input(Submit("submit", "OK"))
+        self.fields['course'].inital = Course.objects.get(id=course).name
+        instance = getattr(self, 'instance', None)
+        if instance and instance.pk:
+            self.fields['week_date'].widget.attrs['readonly'] = True
+            self.fields['course'].initial = Course.objects.get(id=course).name
+            self.fields['course'].widget.attrs['readonly'] = True
         self.fields['course_content'].queryset = CourseContent.objects.filter(
+            course=course)
+        self.fields['course_action'].queryset = CourseAction.objects.filter(
             course=course)
 
     def clean(self):
@@ -150,15 +165,10 @@ class CourseWeekForm(forms.ModelForm):
                 self._errors['reminder'] = self.error_class(
                     ["Please set a reminder."])
 
-    add_to_calendar = forms.BooleanField(
-        label="Add week to calendar.", required=False)
-    reminder = forms.IntegerField(
-        label="Set reminder in minutes", help_text="e.g. 1 Day = 360 minutes, 1 week = 2520 minutes", required=False)
-
-    # self.fields['course_action'].queryset = CourseAction.objects.filter(
-    #     category="E-Mail")
-
     class Meta:
         model = CourseWeek
-        fields = ('send_mail', 'send_doodle',
+        fields = ('week_date', 'send_mail', 'send_doodle',
                   'course_action', 'course_content', "add_to_calendar", "reminder")
+
+    field_order = ['course', 'week_date', 'send_mail', 'send_doodle',
+                   'course_action', 'course_content', "add_to_calendar", "reminder"]

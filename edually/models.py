@@ -145,10 +145,14 @@ class CourseWeek(models.Model):
     def get_semester(self):
         return str(self.courseExecution_id.semester.name)
 
+    def get_course(self):
+        return str(self.courseExecution_id.course)
+
     def update_date(self, date):
         self.week_date = date
         self.save()
 
+    @transition(field=state, source="new", target="added_to_calendar", on_error="error")
     def add_to_google_calendar(self):
         title = "Test Titel"
         description = "Test Beschreibung"
