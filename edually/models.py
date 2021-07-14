@@ -152,7 +152,6 @@ class CourseWeek(models.Model):
         self.week_date = date
         self.save()
 
-    @transition(field=state, source="new", target="added_to_calendar", on_error="error")
     def add_to_google_calendar(self):
         title = "Test Titel"
         description = "Test Beschreibung"

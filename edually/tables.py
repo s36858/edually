@@ -110,7 +110,7 @@ class CourseExecutionTable(tables.Table):
     class Meta:
         model = CourseExecution
         attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
-        exclude = []
+        exclude = ['id']
 
     weeks = TemplateColumn(
         template_name="edually/courseweek/courseweek_show_column.html",
@@ -133,7 +133,7 @@ class CourseWeekTable(tables.Table):
         model = CourseWeek
         attrs = {"class": settings.EDUALLYDESIGN["table"]["table"]}
         fields = ("week", "week_date",
-                  "send_mail", "send_doodle", "notes", "state")
+                  "send_mail", "send_doodle", "notes")
 
     send_mail = tables.columns.BooleanColumn(verbose_name="Send E-Mail")
     send_doodle = tables.columns.BooleanColumn(verbose_name="Send Poll")
