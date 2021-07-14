@@ -153,8 +153,23 @@ class CourseWeek(models.Model):
         self.save()
 
     def add_to_google_calendar(self):
-        title = "Test Titel"
-        description = "Test Beschreibung"
+        title = self.get_course()
+        content_list = []
+        action_list = []
+        for content in self.course_content.all():
+            content_list.append(content.name)
+        for action in self.course_action.all():
+            action_list.append(action.name)
+        description = "Your Tasks for next week:\n" + \
+            "Upload course content: %s \n" % content_list
+        if self.send_mail or self.send_doodle:
+            if self.send_mail:
+                description = description + "You need to send mails this week.\n"
+            if self.send_doodle:
+                description = description + "You need to create a poll for next week.\n"
+            description = description + "Following templates are needed:  %s\n" % action_list
+        description = description + "Have a nice week! Your eduAlly."
+
         end_datetime = datetime.datetime.combine(
             datetime.date.today(), self.courseExecution_id.end_time)
         start_datetime = datetime.datetime.combine(
